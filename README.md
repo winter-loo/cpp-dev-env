@@ -19,6 +19,27 @@ docker build --tag devhost .
 > * Memory usage can be observed by command `docker stat foo`
 
 
+**Disadvantages**
+
+* not very convenient, especialy for docker command
+
+
+### vagrant
+
+another option is to use vagrant + virtualbox.
+
+create a directory and copy **Vagrantfile** to that direcoty. execute following commands:
+
+```shell
+vagrant up
+vagrant ssh
+```
+
+**Disadvantages**
+
+* often subtle problem so hard to solve
+
+
 ---------------
 
 **references**
