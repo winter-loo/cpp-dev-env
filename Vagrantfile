@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "hashicorp/bionic64"
+  config.vm.box = "bento/amazonlinux-2"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -51,8 +51,8 @@ Vagrant.configure("2") do |config|
   #
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
-    vb.gui = false
-  
+    # vb.gui = true
+
     # Customize the amount of memory on the VM:
     vb.memory = 4096
     vb.cpus = 2
@@ -64,12 +64,20 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt-get install -y g++ zsh
-    # wget https://github.com/Kitware/CMake/releases/download/v3.21.0-rc3/cmake-3.21.0-rc3-linux-x86_64.sh
-    # sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    sudo yum install -y gcc-c++ cmake3 git perf zsh util-linux-user
+    sudo ln -s /usr/bin/cmake3 /usr/bin/cmake
+    sudo ln -s /usr/bin/ctest3 /usr/bin/ctest
+    sudo ln -s /usr/bin/cpacke /usr/bin/cpack
+    sudo chsh -s `command -v zsh` vagrant
+
+    git clone https://github.com/brendangregg/FlameGraph.git
+    sudo mv FlameGraph /opt/
+
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    sed -i "s/^plugins=(\(.*\))/plugins=(\1 zsh-autosuggestions zsh-syntax-highlighting)/g" ~/.zshrc
+    sed -i "s/^ZSH_THEME=.*/ZSH_THEME=\"itchy\"/g" ~/.zshrc
   SHELL
 end
