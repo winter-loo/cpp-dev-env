@@ -31,8 +31,7 @@ another option is to use vagrant + virtualbox.
 create a directory and copy **Vagrantfile** to that direcoty. execute following commands:
 
 ```shell
-vagrant up
-vagrant ssh
+./build.sh
 ```
 
 **Disadvantages**
