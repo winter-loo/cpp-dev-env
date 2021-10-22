@@ -64,8 +64,8 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    sudo yum install -y gcc-c++ cmake3 git perf zsh util-linux-user
+  config.vm.provision "shell", privileged: false, inline: <<-'SHELL'
+    sudo yum install -y glib2-devel.x86_64 gcc-c++ gdb cmake3 git perf zsh util-linux-user tmux
     sudo ln -s /usr/bin/cmake3 /usr/bin/cmake
     sudo ln -s /usr/bin/ctest3 /usr/bin/ctest
     sudo ln -s /usr/bin/cpacke /usr/bin/cpack
@@ -79,5 +79,6 @@ Vagrant.configure("2") do |config|
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     sed -i "s/^plugins=(\(.*\))/plugins=(\1 zsh-autosuggestions zsh-syntax-highlighting)/g" ~/.zshrc
     sed -i "s/^ZSH_THEME=.*/ZSH_THEME=\"itchy\"/g" ~/.zshrc
+    echo "installation DONE"
   SHELL
 end
