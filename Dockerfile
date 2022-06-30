@@ -2,10 +2,6 @@ FROM "amazonlinux:latest"
 
 RUN yum install -y cmake3 gdb gcc-c++ zsh wget git curl vim manpages-dev manpages-posix-dev man util-linux-user
 
-# RUN apt install -y locales
-# RUN rm -rf /var/lib/apt/lists/* && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-# ENV LANG en_US.utf8
-
 RUN chsh -s `command -v zsh` root
 
 WORKDIR /root
